@@ -18,7 +18,7 @@ const userSchema = new Schema({
         type:String,
         required:true,
         set:value => md5(value),
-        select:false
+        // select:false
     },
     "bio":  {
         type:String,

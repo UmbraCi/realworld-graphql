@@ -12,4 +12,13 @@ module.exports = class Users extends MongoDataSource {
             username
         })
     }
+
+    saveUser(args){
+        const user = new this.model(args)
+        return user.save()
+    }
+
+    findById(userId){
+        return this.findOneById(userId)
+    }
 }

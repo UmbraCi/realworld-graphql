@@ -6,18 +6,28 @@ const http = require('http');
 const typeDefs = require('./type-defs')
 const resolvers = require('./resolvers')
 
-const dataSource = require('./data-sources')
+const schema = require('./schema')
+
+const dataSources = require('./data-sources')
 
 // 4.创建ApolloServer实例    
 async function startApolloServer(typeDefs, resolvers) {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    // typeDefs,
+    // resolvers,
+    schema,
     csrfPrevention: true,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    dataSources: () => dataSource,
+    dataSources:dataSources,
+    //所有的请求都会经过这个中间件
+    context: ({ req })=>{
+      const token = req.headers.authorization
+      return {
+        token
+      }
+    }
   });
 
   await server.start();
