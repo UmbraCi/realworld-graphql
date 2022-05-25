@@ -21,4 +21,11 @@ module.exports = class Users extends MongoDataSource {
     findById(userId){
         return this.findOneById(userId)
     }
+
+    UpdateUser(userId,data){
+        return this.model.findByIdAndUpdate({_id:userId},
+            data,
+            {new:true}   //返回更新后的数据
+            )
+    }
 }

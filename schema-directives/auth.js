@@ -27,6 +27,7 @@ function AuthDirective(schema, directiveName) {
           fieldConfig.resolve = async function (source, args, context, info) {
             const { token, dataSources } = context;
             if(!token){
+              console.log(token)
                 throw new AuthenticationError('未授权')
             }
             try {
@@ -34,8 +35,10 @@ function AuthDirective(schema, directiveName) {
                 // console.log(decodeToken)
                 const user = await dataSources.users.findById(decodeToken.id)
                 // console.log(user)
+                //把当前登录的用户挂载到context上下文对象中，给后续的resolver使用
                 context.user = user
             } catch (error) {
+              console.log(error)
                 throw new AuthenticationError('未授权')
             }
             const result = await resolve(source, args, context, info);

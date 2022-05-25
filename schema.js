@@ -10,7 +10,7 @@ const AuthDirective = require('./schema-directives/auth')
 // Create the base executable schema  
 let schema = makeExecutableSchema({
     typeDefs,
-    resolvers
+    resolvers,
   });
 
 // Transform the schema by applying directive logic

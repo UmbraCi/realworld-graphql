@@ -7,7 +7,7 @@ const typeDefs = gql`
   directive @auth on FIELD_DEFINITION
 
   type Book {
-    title:String @auth
+    title:String
     author: String @deprecated(reason: "Use newField.")
   }
   type User{
@@ -16,6 +16,7 @@ const typeDefs = gql`
     bio:String,
     image:String,
     token:String,
+    following:Boolean
   }
   type UserPayload{
       user:User
@@ -31,15 +32,56 @@ const typeDefs = gql`
     password:String!  
   }
 
+  input UpdateUserInput{
+    username:String,
+    password:String,
+    email:String,
+    bio:String,
+    image:String,
+  }
+  #Article
+  input ArticleInput{
+    title:String!
+    description:String!
+    body:String!
+    tagList:[String]
+  }
+
+  type Article{
+    slug: String!,
+    title:String!,
+    description: String!,
+    body: String!,
+    tagList: [
+      String!
+    ],
+    createdAt: String!,
+    updatedAt: String!,
+    favorited: Boolean,
+    favoritesCount: Int,
+    author: User
+  }
+
+  type ArticlePayload{
+    article:Article
+  }
+  
+  type ArticlesPayload{
+    articles:[Article!],
+    articlesCount:Int
+  }
 
   type Query {
-    books: [Book],
-    currentUser:User
+    books: [Book]@auth,
+    currentUser:User @auth,
+    articles(offset:Int = 0, limit:Int = 2):ArticlesPayload @auth
   }
 
   type Mutation{
       login(user:LoginInput):UserPayload,
-      createUser(user:CreateUserInput):UserPayload
+      createUser(user:CreateUserInput):UserPayload,
+      UpdateUser(user:UpdateUserInput):UserPayload @auth,
+      createArticle(article:ArticleInput):ArticlePayload @auth,
   }
 `;
 
