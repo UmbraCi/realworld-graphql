@@ -8,6 +8,7 @@ module.exports = class Article extends MongoDataSource {
     }
 
     getArticles(options){
+        console.log(options)
         return this.model.find().skip(options.offset).limit(options.limit)
     }
 

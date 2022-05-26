@@ -1,6 +1,10 @@
 const resolvers = {
     Query:{
         async articles(parent, {offset, limit}, {dataSources}){
+            const articles = await dataSources.articles.getArticles({offset, limit})
+            return {
+                articles
+            }
             // const [articles,articlesCount] = await Promise.all([
             //     dataSources.articles.getArticles({offset, limit}),
             //     dataSources.articles.getArticleCount()
@@ -8,7 +12,7 @@ const resolvers = {
             // return {
             //     articles,articlesCount
             // }
-            return {}
+            // return {}
         }
     },
     Mutation:{
@@ -31,13 +35,6 @@ const resolvers = {
         }
     },
     ArticlesPayload:{
-        async articles (parent, { offset, limit }, { dataSources }) {
-            const articles = await dataSources.articles.getArticles({
-              offset,
-              limit
-            })
-            return articles
-          },
         async articlesCount (parent, args, { dataSources }) {
             const count = await dataSources.articles.getArticleCount()
             return count
